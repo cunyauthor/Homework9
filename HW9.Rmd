@@ -1,0 +1,62 @@
+---
+title: "Homework9"
+author: "Ka Man Chan"
+date: "October 24, 2016"
+output: html_document
+---
+ 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+ 
+##  Introduction:
+### Choose one of the New York Times APIs, construct an interface in R to read in the JSON data, and transform it to an R dataframe
+### Here's my API Key: 3f70a20b16bb47febec3aee5069e741d
+
+```{r NYT}
+
+article_key <- "&api-key=3f70a20b16bb47febec3aee5069e741d"
+
+list.of.packages <- c("rtimes","jsonlite", "DT")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+ 
+library(rtimes)
+library(jsonlite)
+library(DT)
+
+#search for articles regarding "Virtual Reality"
+
+url <- "http://api.nytimes.com/svc/search/v2/articlesearch.json?q=Virtual+Reality"
+req1 <- fromJSON(paste0(url, article_key))
+articles1 <- req1$response$docs
+keeps <- c("web_url","snippet","lead_paragraph","pub_date","document_type")
+df = articles1[keeps]
+datatable(df)
+
+#search for Movie regarding "Mission Impossible"
+
+url <- "http://api.nytimes.com/svc/movies/v2/reviews/search.json?query=mission:+impossible"
+req2 <- fromJSON(paste0(url, article_key))
+articles2 <- req2$results
+keeps <- c("display_title","mpaa_rating","byline","headline","summary_short","publication_date","opening_date")
+df = articles2[keeps]
+datatable(df)
+
+#search for bestseller book with published date 2016-11-01
+
+url <- "http://api.nytimes.com/svc/books/v2/lists/overview.json?published_date=2016-11-01"
+req3 <- fromJSON(paste0(url, article_key))
+bestsellers <- req3$results$list
+category <- bestsellers[[1, "books"]]
+keeps <- c("rank","title","author", "contributor","description", "publisher","primary_isbn10")
+df=category[keeps]
+datatable(df)
+```
+
+{r Conclusion, echo=FALSE}
+```
+##  Conclusion
+### The use of New York Times APIs is strange forward.
+```
+ 
