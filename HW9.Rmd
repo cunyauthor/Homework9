@@ -57,6 +57,6 @@ datatable(df)
 {r Conclusion, echo=FALSE}
 ```
 ##  Conclusion
-### The use of New York Times APIs is strange forward.
+### The use of New York Times APIs is straightforward.
 ```
  
